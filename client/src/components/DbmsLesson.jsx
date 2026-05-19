@@ -98,4 +98,4 @@ const DbmsLesson = () => {
   );
 };
 
-export default DBMSLessons;
+export default DBMSLesson;
