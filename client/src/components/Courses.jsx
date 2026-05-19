@@ -33,13 +33,13 @@ const Courses = () => {
       link: '/HtmlLesson',
     },
     {
-      title: 'CSS for Beginner',
+      title: 'CSS for Beginners',
       desc: 'Learn how to style beautiful websites.',
       img: cssLogo,
       link: '/CssLesson',
     },
     {
-      title: 'JS for Beginner',
+      title: 'JS for Beginners',
       desc: 'Learn how to give functionality to websites.',
       img: jsLogo,
       link: '/JsLesson',

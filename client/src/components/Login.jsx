@@ -45,11 +45,11 @@ const Login = () => {
     <section className="login-section">
       <div className="login-container">
         <div className="login-image">
-          <img src={loginImage} alt="login image" />
+          <img src={loginImage} alt="Login" />
         </div>
         <div className="login-card">
           <form className="login-form" onSubmit={handleSubmit}>
-            <h1>Hello, Welcome !</h1>
+            <h1>Hello, Welcome!</h1>
             <label>EMAIL:</label>
             <input
               type="email"
