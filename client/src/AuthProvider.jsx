@@ -59,7 +59,7 @@ export const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   if (!user) {
-    return <Navigate to="/Login" replace state={{ from: location }} />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   return children;
@@ -69,17 +69,7 @@ export const PublicRoute = ({ children }) => {
   const { user } = useAuth();
 
   if (user) {
-    return <Navigate to="/Dashboard" replace />;
-  }
-
-  return children;
-};
-
-export const PublicHome = ({ children }) => {
-  const { user } = useAuth();
-
-  if (user) {
-    return <Navigate to="/Dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;

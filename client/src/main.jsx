@@ -5,7 +5,8 @@ import './index.css';
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
+  Navigate
 } from 'react-router-dom';
 
 import App from './App.jsx';
@@ -28,7 +29,6 @@ import {
   AuthProvider,
   PrivateRoute,
   PublicRoute,
-  PublicHome,
 } from './AuthProvider.jsx';
 
 // HTML Lessons
@@ -228,12 +228,13 @@ createRoot(document.getElementById('root')).render(
 
         <Routes>
           {/* General Routes */}
-          <Route path="/" element={<PublicHome><Courses /></PublicHome>} />
-          <Route path="/Login" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="/SignUp" element={<PublicRoute><SignUp /></PublicRoute>} />
+          <Route path="/" element={<Navigate to="/lessons" replace />} />
+          <Route path="/lessons" element={<Courses />} />
+          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+          <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
           <Route path="/ForgetPassword" element={<ForgetPassword />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
-          <Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/report/:email" element={<ViewReport />} />
