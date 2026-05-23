@@ -2664,8 +2664,8 @@ select:focus {
     content: '🔍︎';
     font-size: 0.95rem;
   }
-
-feat/scroll-to-top-button .scroll-to-top {
+}
+.scroll-to-top {
   position: fixed;
   bottom: 24px;
   right: 24px;
