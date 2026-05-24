@@ -8,7 +8,8 @@
 
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "node index.js",
+    "dev:watch": "nodemon index.js",
     "build": "echo Backend build not required",
     "lint": "eslint ."
   },

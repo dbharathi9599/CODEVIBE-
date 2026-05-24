@@ -9,6 +9,7 @@ import PasswordField from "./PasswordField";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
   const [responseMsg, setResponseMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -20,6 +21,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const nextErrors = {
+      email: email.trim() ? "" : "Email is required",
+      password: password.trim() ? "" : "Password is required",
+    };
+
+    setErrors(nextErrors);
+
+    if (nextErrors.email || nextErrors.password) {
+      return;
+    }
 
     setLoading(true);
     setResponseMsg("");
@@ -101,7 +113,14 @@ const Login = () => {
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => {
+                const nextEmail = e.target.value;
+                setEmail(nextEmail);
+                setErrors((prev) => ({
+                  ...prev,
+                  email: nextEmail.trim() ? "" : "Email is required",
+                }));
+              }}
               aria-invalid={!!errors.email}
               aria-describedby="email-error"
               style={{
@@ -128,7 +147,14 @@ const Login = () => {
               id="login-password"
               label="PASSWORD:"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                const nextPassword = e.target.value;
+                setPassword(nextPassword);
+                setErrors((prev) => ({
+                  ...prev,
+                  password: nextPassword.trim() ? "" : "Password is required",
+                }));
+              }}
             />
 
             {errors.password && (

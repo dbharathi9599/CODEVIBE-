@@ -1,19 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowRight,
-  BarChart3,
-  BookOpen,
-  LayoutDashboard,
-  Sparkles,
-  Star,
-  UserCircle,
-  Wand2,
-} from "lucide-react";
+import { 
+  FaSignOutAlt, FaUserCircle, FaEnvelope, FaUniversity, FaGraduationCap, 
+  FaChartLine, FaTrophy, FaBookOpen, FaCode, FaDatabase, FaServer, 
+  FaReact, FaNodeJs, FaCss3Alt, FaHtml5, FaJs, FaArrowRight, 
+  FaCalendarAlt, FaClock, FaFire, FaMedal, FaCertificate, FaStar,
+  FaGithub, FaLinkedin, FaTwitter, FaArrowUp
+} from "react-icons/fa";
 import { useAuth } from "../AuthProvider.jsx";
-import API_BASE_URL from "../config/api";
-import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -22,1025 +16,1132 @@ const Dashboard = () => {
   const [greeting, setGreeting] = useState("");
   const [currentTime, setCurrentTime] = useState("");
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const displayName =
-    user?.username?.trim() ||
-    user?.name?.trim() ||
-    user?.email?.split("@")[0] ||
-    user?.Email?.split("@")[0] ||
-    "Learner";
 
-const formatShortDate = (value) => {
-  if (!value) return "—";
-  const date = new Date(value);
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
-};
-
-const formatTime = (seconds) => {
-  if (!seconds || seconds <= 0) return "0m";
-  if (seconds < 60) return `${seconds}s`;
-  const totalMinutes = Math.floor(seconds / 60);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-};
-
-const SUBJECT_GRADIENTS = {
-  html: { start: "#ff9a6c", end: "#ff576d" },
-  css: { start: "#63b5ff", end: "#486cff" },
-  javascript: { start: "#f9d64c", end: "#f89c20" },
-  react: { start: "#66e3ff", end: "#4a8dff" },
-  node: { start: "#7ef39a", end: "#3bb46c" },
-  dsa: { start: "#c98bff", end: "#7f63ff" },
-  mongodb: { start: "#6eea83", end: "#239955" },
-  python: { start: "#5bc1ff", end: "#ffd05b" },
-};
-
-const generateFallbackGradient = (subject) => {
-  const key = subject?.toString() || "fallback";
-  const hash = Array.from(key).reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const hue = 45 + (hash % 310);
-  return {
-    start: `hsl(${hue}, 88%, 64%)`,
-    end: `hsl(${(hue + 32) % 360}, 88%, 55%)`,
-  };
-};
-
-const getSubjectGradient = (subject) => {
-  const key = subject?.toString().toLowerCase();
-  return SUBJECT_GRADIENTS[key] || generateFallbackGradient(subject);
-};
-
-const buildHeatmapCells = (events = [], streak = 0, weeks = 10) => {
-  const dayMs = 24 * 60 * 60 * 1000;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const totalDays = weeks * 7;
-  const start = new Date(today.getTime() - dayMs * (totalDays - 1));
-  const activeDates = events.reduce((acc, event) => {
-    const date = new Date(event.x || event.createdAt || event.date || "");
-    if (!date || Number.isNaN(date.getTime())) return acc;
-    const key = date.toISOString().slice(0, 10);
-    acc[key] = (acc[key] || 0) + 1;
-    return acc;
-  }, {});
-
-  for (let offset = 0; offset < Math.min(streak, totalDays); offset += 1) {
-    const streakDate = new Date(today.getTime() - offset * dayMs);
-    const streakKey = streakDate.toISOString().slice(0, 10);
-    activeDates[streakKey] = Math.max(activeDates[streakKey] || 0, 1);
-  }
-
-  return Array.from({ length: totalDays }, (_, index) => {
-    const date = new Date(start.getTime() + index * dayMs);
-    const dateKey = date.toISOString().slice(0, 10);
-    return {
-      date,
-      active: Boolean(activeDates[dateKey]),
-      count: activeDates[dateKey] || 0,
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good Morning");
+    else if (hour < 17) setGreeting("Good Afternoon");
+    else setGreeting("Good Evening");
+    
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }));
     };
-  });
-};
-
-const HeatmapCalendar = ({ events = [], streak = 0, weeks = 10 }) => {
-  const heatmapCells = useMemo(() => buildHeatmapCells(events, streak, weeks), [events, streak, weeks]);
-
-  return (
-    <div className="heatmap-calendar">
-      <div className="heatmap-label-row">
-        <span>Recent activity</span>
-        <div className="heatmap-legend">
-          <span className="heatmap-legend-dot heatmap-legend-dot--inactive" />
-          <span>Inactive</span>
-          <span className="heatmap-legend-dot heatmap-legend-dot--active" />
-          <span>Active</span>
-        </div>
-      </div>
-      <div className="heatmap-grid" role="grid">
-        {heatmapCells.map((cell) => (
-          <div
-            key={cell.date.toISOString()}
-            className={`heatmap-cell ${cell.active ? "heatmap-cell--active" : ""}`}
-            title={`${formatShortDate(cell.date)}${cell.active ? " — Active" : " — Rest"}`}
-            role="button"
-            aria-label={`${formatShortDate(cell.date)} ${cell.active ? "active" : "inactive"}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const getLevel = (points) => {
-  if (!points) return "Beginner";
-  const tier = Math.min(6, Math.max(1, Math.ceil(points / 180)));
-  return ["Beginner", "Rising", "Skilled", "Advanced", "Expert", "Master"][tier - 1];
-};
-
-const buildSmoothPath = (values, width, height, xOffset = 24) => {
-  const count = values.length;
-  if (!count) return "";
-
-  const coords = values.map((value, index) => {
-    const x = (index / Math.max(count - 1, 1)) * width + xOffset;
-    const max = Math.max(...values, 0);
-    const min = Math.min(0, ...values);
-    const normalized = max === min ? 0 : (value - min) / Math.max(max - min, 1);
-    const y = 12 + (1 - normalized) * height;
-    return { x, y };
-  });
-
-  if (coords.length === 1) {
-    return `M ${coords[0].x} ${coords[0].y}`;
-  }
-
-  return coords.reduce((path, current, index) => {
-    if (index === 0) return `M ${current.x} ${current.y}`;
-    const previous = coords[index - 1];
-    const midX = (previous.x + current.x) / 2;
-    return `${path} C ${midX} ${previous.y} ${midX} ${current.y} ${current.x} ${current.y}`;
-  }, "");
-};
-
-const buildGrowthTimeline = (points = []) => {
-  let cumulative = 0;
-  const uniqueLessonsCompleted = new Set();
-  const timeline = [];
-
-  points
-    .filter((item) => item && typeof item.y === 'number')
-    .forEach((item) => {
-      cumulative += item.y;
-      if (item.lessonId) {
-        uniqueLessonsCompleted.add(item.lessonId);
-      }
-
-      const point = {
-        date: item.x || item.createdAt || null,
-        value: cumulative,
-        lessonsCompleted: item.lessonsCompleted ?? uniqueLessonsCompleted.size,
-        label: item.x ? formatShortDate(item.x) : `Step ${uniqueLessonsCompleted.size || 1}`,
-      };
-
-      if (!timeline.length || timeline[timeline.length - 1].value !== point.value) {
-        timeline.push(point);
-      }
-    });
-
-  if (timeline.length && timeline[0].value !== 0) {
-    timeline.unshift({
-      date: timeline[0].date || new Date().toISOString(),
-      value: 0,
-      lessonsCompleted: 0,
-      label: 'Start',
-    });
-  }
-
-  return timeline;
-};
-
-const getGrowthLabels = (points = []) => {
-  if (!points.length) return [];
-  if (points.length <= 3) return points.map((point) => point.label);
-  const labels = [points[0].label];
-  const mid = points[Math.floor((points.length - 1) / 2)];
-  const last = points[points.length - 1];
-  if (mid && mid.label !== labels[0]) labels.push(mid.label);
-  if (last.label !== labels[0]) labels.push(last.label);
-  return labels;
-};
-
-const formatGrowthSpan = (points = []) => {
-  if (points.length < 2 || !points[0].date || !points[points.length - 1].date) return 'Recent';
-  const first = new Date(points[0].date);
-  const last = new Date(points[points.length - 1].date);
-  const days = Math.max(1, Math.round((last - first) / (1000 * 60 * 60 * 24)));
-  if (days >= 60) return `${Math.round(days / 30)} months`;
-  if (days >= 14) return `${Math.round(days / 7)} weeks`;
-  return `${days} days`;
-};
-
-const GrowthLineChart = ({ points = [], color = { start: '#ffb8d9', end: '#c386ff' }, label = 'Growth chart' }) => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const hasData = points.length > 1;
-
-  if (!hasData) {
-    return (
-      <div className="chart-empty chart-empty--large">
-        <span>Need more activity to display growth</span>
-      </div>
-    );
-  }
-
-  const values = points.map((point) => point.value);
-  const max = Math.max(...values, 10);
-  const min = 0;
-  const yRange = max - min;
-  const width = 320;
-  const height = 220;
-  const chartWidth = width - 42;
-  const chartHeight = height - 50;
-
-  const path = buildSmoothPath(values, chartWidth, chartHeight);
-  const labels = getGrowthLabels(points);
-  const yTicks = [0, Math.round(max * 0.33), Math.round(max * 0.66), max].map((value) => Math.round(value / 10) * 10);
-  const hoveredPoint = hoveredIndex !== null ? points[hoveredIndex] : null;
-
-  return (
-    <div className="growth-chart-wrapper">
-      <svg viewBox={`0 0 ${width} ${height}`} className="analytics-chart" aria-label={label}>
-        <defs>
-          <linearGradient id="growth-line" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor={color.start} />
-            <stop offset="100%" stopColor={color.end} />
-          </linearGradient>
-          <linearGradient id="growth-fill" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor={color.end} stopOpacity="0.18" />
-            <stop offset="100%" stopColor={color.start} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        <rect x="24" y="12" width={chartWidth} height={chartHeight} rx="24" fill="rgba(255,255,255,0.03)" />
-
-        {yTicks.map((tickValue, index) => {
-          const y = 12 + chartHeight - (tickValue - min) / Math.max(yRange, 1) * chartHeight;
-          return (
-            <g key={tickValue}>
-              <line x1="24" x2={chartWidth + 24} y1={y} y2={y} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-              <text x="12" y={y + 4} fill="rgba(255,255,255,0.55)" fontSize="10" textAnchor="start">
-                {tickValue}
-              </text>
-            </g>
-          );
-        })}
-
-        <path d={`${path} L ${chartWidth + 24} ${chartHeight + 12} L 24 ${chartHeight + 12} Z`} fill="url(#growth-fill)" opacity="0.8" />
-        <path d={path} fill="none" stroke="url(#growth-line)" strokeWidth="3" strokeLinecap="butt" strokeLinejoin="round" className="chart-path" />
-
-        {points.map((point, index) => {
-          const x = (index / Math.max(points.length - 1, 1)) * chartWidth + 24;
-          const normalized = yRange === 0 ? 0.5 : (point.value - min) / yRange;
-          const y = chartHeight + 12 - normalized * chartHeight;
-          const markerRadius = hoveredIndex === index ? 6.5 : 4.5;
-          return (
-            <g key={index}>
-              <circle
-                cx={x}
-                cy={y}
-                r={markerRadius}
-                fill={color.end}
-                opacity="0.95"
-              />
-              <circle
-                cx={x}
-                cy={y}
-                r={markerRadius * 1.6}
-                fill={color.end}
-                opacity={hoveredIndex === index ? 0.12 : 0.06}
-              />
-              <rect
-                x={Math.max(24, x - chartWidth / Math.max(points.length, 1) / 2)}
-                y="12"
-                width={Math.min(chartWidth / Math.max(points.length, 1), chartWidth)}
-                height={chartHeight}
-                fill="transparent"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              />
-            </g>
-          );
-        })}
-      </svg>
-      <div className="growth-axis-row">
-        {labels.map((labelText) => (
-          <span key={labelText} className="growth-axis-label">
-            {labelText}
-          </span>
-        ))}
-      </div>
-      {hoveredPoint && (
-        <div className="chart-tooltip">
-          <span>{hoveredPoint.date ? new Date(hoveredPoint.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent activity'}</span>
-          <strong>{hoveredPoint.value} points</strong>
-          <small>{hoveredPoint.lessonsCompleted} lessons completed</small>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const MiniLineChart = ({ points = [], values = [], color = "#ff7aa5", label = "", gradientId = "subject-gradient", maxScale = null }) => {
-  const chartColor = typeof color === 'string' ? { start: color, end: color } : color;
-  const rawPoints = values.length
-    ? values.map((value, index) => ({ value: value || 0, label: `Step ${index + 1}` }))
-    : points.map((point, index) => {
-        if (typeof point === 'number') {
-          return { value: point, label: `Step ${index + 1}` };
-        }
-
-        return {
-          value: typeof point.progress === 'number' ? point.progress : point.value || 0,
-          label: point.lesson ? `Lesson ${point.lesson}` : point.label || `Step ${index + 1}`,
-        };
-      });
-
-  if (!rawPoints.length) {
-    return (
-      <div className="chart-empty chart-empty--large">
-        <span>Start learning to build progress history</span>
-      </div>
-    );
-  }
-
-  const valuesList = rawPoints.map((point) => point.value || 0);
-  const max = maxScale ? Math.max(maxScale, ...valuesList) : Math.max(...valuesList);
-  const min = Math.min(0, ...valuesList);
-
-  if (rawPoints.length === 1) {
-    const point = rawPoints[0];
-    const x = 120;
-    const normalized = max === min ? 0 : (point.value - min) / Math.max(max - min, 1);
-    const y = 90 - 12 - normalized * 70;
-    const path = `M 24 78 C 64 78 96 ${y} ${x} ${y}`;
-
-    return (
-      <svg viewBox="0 0 240 90" className="analytics-chart" aria-label={label}>
-        <defs>
-          <linearGradient id={`${gradientId}-line`} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor={chartColor.start} />
-            <stop offset="100%" stopColor={chartColor.end} />
-          </linearGradient>
-          <linearGradient id={`${gradientId}-fill`} x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor={chartColor.end} stopOpacity="0.24" />
-            <stop offset="100%" stopColor={chartColor.start} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <rect x="9" y="10" width="222" height="70" rx="16" fill="rgba(255,255,255,0.02)" />
-        {[1, 2, 3].map((index) => (
-          <line
-            key={index}
-            x1="9"
-            x2="231"
-            y1={10 + (index * 70) / 4}
-            y2={10 + (index * 70) / 4}
-            stroke="rgba(255,255,255,0.06)"
-            strokeWidth="1"
-          />
-        ))}
-        <path
-          d={path}
-          fill="none"
-          stroke={`url(#${gradientId}-line)`}
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="chart-path"
-        />
-        <circle cx={x} cy={y} r="4.5" fill={chartColor.end} stroke={chartColor.end} strokeWidth="1" opacity="0.95">
-          <title>{`${point.label}: ${point.value}`}</title>
-        </circle>
-      </svg>
-    );
-  }
-
-  const path = buildSmoothPath(valuesList, 222, 90, 9);
-
-  return (
-    <svg viewBox="0 0 240 90" className="analytics-chart" aria-label={label}>
-      <defs>
-        <linearGradient id={`${gradientId}-line`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={chartColor.start} />
-          <stop offset="100%" stopColor={chartColor.end} />
-        </linearGradient>
-        <linearGradient id={`${gradientId}-fill`} x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={chartColor.end} stopOpacity="0.24" />
-          <stop offset="100%" stopColor={chartColor.start} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <rect x="9" y="10" width="222" height="70" rx="16" fill="rgba(255,255,255,0.02)" />
-      {[1, 2, 3].map((index) => (
-        <line
-          key={index}
-          x1="9"
-          x2="231"
-          y1={10 + (index * 70) / 4}
-          y2={10 + (index * 70) / 4}
-          stroke="rgba(255,255,255,0.06)"
-          strokeWidth="1"
-        />
-      ))}
-      <path
-        d={`${path} L 231 78 L 9 78 Z`}
-        fill={`url(#${gradientId}-fill)`}
-        opacity="0.75"
-      />
-      <path
-        d={path}
-        fill="none"
-        stroke={`url(#${gradientId}-line)`}
-        strokeWidth="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.14"
-      />
-      <path
-        d={path}
-        fill="none"
-        stroke={`url(#${gradientId}-line)`}
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="chart-path"
-      />
-      {rawPoints.map((point, index) => {
-        const x = (index / Math.max(rawPoints.length - 1, 1)) * 222 + 9;
-        const normalized = max === min ? 0.5 : (point.value - min) / Math.max(max - min, 1);
-        const y = 90 - 12 - normalized * 70;
-        return (
-          <circle
-            key={index}
-            cx={x}
-            cy={y}
-            r="4.5"
-            fill={chartColor.end}
-            stroke={chartColor.end}
-            strokeWidth="1"
-            opacity="0.95"
-          >
-            <title>{`${point.label}: ${point.value}`}</title>
-          </circle>
-        );
-      })}
-    </svg>
-  );
-};
-
-const buildSubjectProgressPoints = (completedLessons = 0) => {
-  const lessons = Number.isFinite(completedLessons) ? Math.max(0, completedLessons) : 0;
-
-  if (lessons === 0) {
-    return [{ lesson: 0, progress: 0 }];
-  }
-
-  return Array.from({ length: lessons }, (_, index) => ({
-    lesson: index + 1,
-    progress: index + 1,
-  }));
-};
-
-const SubjectTrend = ({ completedLessons = 0, completion = null, totalLessons = 0, gradientId = "subject-gradient", color = { start: "#8f7bff", end: "#5b6cff" } }) => {
-  const points = buildSubjectProgressPoints(completedLessons);
-  const chartPoints = points;
-  const computedPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : null;
-  const displayValue = chartPoints.length
-    ? typeof completion === 'number' && completion > 0
-      ? completion
-      : computedPercent !== null && computedPercent > 0
-        ? computedPercent
-        : null
-    : null;
-  const axisLabels = chartPoints.length > 1
-    ? [
-        chartPoints[0].label || `Lesson ${chartPoints[0].lesson}`,
-        chartPoints[chartPoints.length - 1].label || `Lesson ${chartPoints[chartPoints.length - 1].lesson}`,
-      ]
-    : chartPoints.length === 1
-    ? [chartPoints[0].label || `Lesson ${chartPoints[0].lesson}`]
-    : [];
-
-  return (
-    <div className="subject-trend-card">
-      <div className="subject-trend-chart-header">
-        <div className="subject-trend-label">Progress line</div>
-        <div className="subject-trend-value">{displayValue !== null ? `${displayValue}%` : "—"}</div>
-      </div>
-      <div className="subject-trend-chart">
-        <MiniLineChart
-          points={chartPoints}
-          color={color}
-          label="Subject progress"
-          gradientId={gradientId}
-          maxScale={100}
-        />
-      </div>
-      <div className="subject-date-axis subject-date-axis--spread">
-        {axisLabels.length ? (
-          axisLabels.map((date, index) => (
-            <span key={`${date}-${index}`} className="subject-date-label subject-date-label--small">
-              {date}
-            </span>
-          ))
-        ) : (
-          <span className="subject-date-label subject-date-label--small">Start learning to build progress history</span>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const Dashboard = () => {
-  const navigate = useNavigate();
-  const { user, token, logout, updateUser } = useAuth();
-  const [analytics, setAnalytics] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [editMode, setEditMode] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [profileForm, setProfileForm] = useState({
-    username: user?.username || "",
-    college: user?.college || "",
-    year: user?.year || "",
-    bio: user?.bio || "",
-    avatarUrl: user?.avatarUrl || "",
-  });
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatarUrl || "");
-
-  const email = user?.Email || user?.email || "";
-
-  useEffect(() => {
-    if (!token || !email) return;
-
-    const source = axios.CancelToken.source();
-    setLoading(true);
-    setError("");
-
-    axios
-      .get(`${API_BASE_URL}/api/analytics/${encodeURIComponent(email)}`, {
-        cancelToken: source.token,
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setAnalytics(response.data);
-      })
-      .catch((err) => {
-        if (!axios.isCancel(err)) {
-          setError(err.response?.data?.message || "Failed to load dashboard data.");
-        }
-      })
-      .finally(() => setLoading(false));
-
-    return () => source.cancel();
-  }, [email, token]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    setProfileForm({
-      username: user?.username || "",
-      college: user?.college || "",
-      year: user?.year || "",
-      bio: user?.bio || "",
-      avatarUrl: user?.avatarUrl || "",
-    });
-    setAvatarPreview(user?.avatarUrl || "");
-  }, [user]);
-
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/Login");
   };
 
-  const handleInputChange = (field) => (event) => {
-    const value = event.target.value;
-    setProfileForm((prev) => ({ ...prev, [field]: value }));
+  const handleViewReport = (course) => {
+    const email = user?.email || user?.Email || "";
+    navigate(`/report/${email}?course=${course}`);
   };
 
-  const persistAvatar = async (avatarUrl) => {
-    if (!token) return;
-    try {
-      const response = await axios.put(
-        `${API_BASE_URL}/api/auth/profile`,
-        { avatarUrl },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+  const courses = [
+    { name: "HTML", icon: <FaHtml5 />, color: "#ff4d4d", bgColor: "#ff4d4d20", progress: 75, lessons: 10, completed: 8 },
+    { name: "CSS", icon: <FaCss3Alt />, color: "#2965f1", bgColor: "#2965f120", progress: 65, lessons: 14, completed: 9 },
+    { name: "JavaScript", icon: <FaJs />, color: "#f7df1e", bgColor: "#f7df1e20", progress: 45, lessons: 29, completed: 13 },
+    { name: "C Programming", icon: <FaCode />, color: "#2d6a4f", bgColor: "#2d6a4f20", progress: 30, lessons: 17, completed: 5 },
+    { name: "OOP", icon: <FaCode />, color: "#e17055", bgColor: "#e1705520", progress: 20, lessons: 14, completed: 3 },
+    { name: "DSA", icon: <FaChartLine />, color: "#00cec9", bgColor: "#00cec920", progress: 15, lessons: 12, completed: 2 },
+    { name: "DBMS", icon: <FaDatabase />, color: "#6c5ce7", bgColor: "#6c5ce720", progress: 10, lessons: 12, completed: 1 },
+    { name: "MongoDB", icon: <FaDatabase />, color: "#4db33d", bgColor: "#4db33d20", progress: 5, lessons: 8, completed: 0 },
+    { name: "Node.js", icon: <FaNodeJs />, color: "#68a063", bgColor: "#68a06320", progress: 5, lessons: 12, completed: 0 },
+    { name: "Express.js", icon: <FaServer />, color: "#ffffff", bgColor: "#ffffff20", progress: 0, lessons: 10, completed: 0 },
+    { name: "React.js", icon: <FaReact />, color: "#61dafb", bgColor: "#61dafb20", progress: 0, lessons: 14, completed: 0 }
+  ];
 
-      if (response.data?.user) {
-        updateUser(response.data.user);
-        setAnalytics((prev) =>
-          prev
-            ? { ...prev, profile: { ...prev.profile, ...response.data.user } }
-            : prev
-        );
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Unable to save avatar.");
-    }
-  };
-
-  const handleAvatarUpload = async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const result = reader.result;
-      setAvatarPreview(result);
-      setProfileForm((prev) => ({ ...prev, avatarUrl: result }));
-      await persistAvatar(result);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSaveProfile = async () => {
-    if (!token) return;
-    setSaving(true);
-    try {
-      const response = await axios.put(
-        `${API_BASE_URL}/api/auth/profile`,
-        profileForm,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (response.data?.user) {
-        updateUser(response.data.user);
-        setAnalytics((prev) =>
-          prev
-            ? { ...prev, profile: { ...prev.profile, ...response.data.user } }
-            : prev
-        );
-      }
-      setEditMode(false);
-    } catch (err) {
-      setError(err.response?.data?.message || "Unable to save profile.");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const metrics = useMemo(() => {
-    const stats = analytics?.stats || {};
-    return [
-      {
-        label: "Lessons Completed",
-        value: formatNumber(stats.lessonsCompleted),
-        icon: <BookOpen />,
-      },
-      {
-        label: "Subjects Active",
-        value: formatNumber(analytics?.subjects.length || 0),
-        icon: <LayoutDashboard />,
-      },
-      {
-        label: "Accuracy",
-        value: `${stats.averageScore || 0}%`,
-        icon: <Sparkles />,
-      },
-      {
-        label: "Total Points",
-        value: formatNumber(stats.totalPoints),
-        icon: <Wand2 />,
-      },
-      {
-        label: "Learning Streak",
-        value: formatNumber(stats.streak),
-        icon: <UserCircle />,
-      },
-    ];
-  }, [analytics]);
-
-  const subjectCards = useMemo(() => {
-    return analytics?.subjects?.map((subject) => {
-      const completed = subject.completedLessons || 0;
-      const total = subject.totalLessons || subject.completedLessons || 0;
-      const completionValue = Math.max(0, completed);
-
-      return {
-        title: subject.subject,
-        completion: completionValue,
-        averageScore: subject.averageScore || 0,
-        lessons: completed,
-        totalLessons: total,
-        history: subject.history || [],
-        streak: subject.streak || 0,
-        lastActivity: subject.lastActivity || null,
-      };
-    }) || [];
-  }, [analytics]);
-
-  const maxSubjectLessons = useMemo(() => {
-    const values = analytics?.subjects?.map((item) => item.completedLessons || 0) || [];
-    return Math.max(1, ...values);
-  }, [analytics]);
-
-  const timelineData = useMemo(() => {
-    const rawPoints = analytics?.analytics?.timelines?.points || [];
-    const points = buildGrowthTimeline(rawPoints);
-    const statsTotalPoints = Number.isFinite(analytics?.stats?.totalPoints) ? analytics.stats.totalPoints : 0;
-
-    const cappedPoints = points.map((point) => ({
-      ...point,
-      value: Math.min(point.value, statsTotalPoints),
-    }));
-
-    let adjustedPoints;
-
-    if (cappedPoints.length) {
-      if (cappedPoints[0].value === statsTotalPoints) {
-        adjustedPoints = cappedPoints;
-      } else {
-        adjustedPoints = [
-          ...cappedPoints,
-          {
-            date: analytics?.stats?.lastUpdated || new Date().toISOString(),
-            value: statsTotalPoints,
-            lessonsCompleted: cappedPoints[cappedPoints.length - 1]?.lessonsCompleted || 0,
-            label: analytics?.stats?.lastUpdated
-              ? formatShortDate(analytics.stats.lastUpdated)
-              : 'Now',
-          },
-        ];
-      }
-    } else if (statsTotalPoints > 0) {
-      adjustedPoints = [
-        {
-          date: analytics?.stats?.lastUpdated || new Date().toISOString(),
-          value: statsTotalPoints,
-          lessonsCompleted: 0,
-          label: analytics?.stats?.lastUpdated
-            ? formatShortDate(analytics.stats.lastUpdated)
-            : 'Now',
-        },
-      ];
-    } else {
-      adjustedPoints = [];
-    }
-
-    const finalValue = statsTotalPoints;
-    const firstValue = adjustedPoints[0]?.value || 0;
-    const growthPercent = firstValue > 0 ? Math.round(((finalValue - firstValue) / firstValue) * 100) : 0;
-
-    return {
-      points: adjustedPoints,
-      totalPoints: finalValue,
-      growthPercent,
-      lastActive: analytics?.stats?.lastUpdated || adjustedPoints[adjustedPoints.length - 1]?.date || null,
-      spanLabel: formatGrowthSpan(adjustedPoints),
-    };
-  }, [analytics]);
+  const overallProgress = Math.round(courses.reduce((acc, c) => acc + c.progress, 0) / courses.length);
+  const totalLessons = courses.reduce((acc, c) => acc + c.lessons, 0);
+  const totalCompleted = courses.reduce((acc, c) => acc + c.completed, 0);
+  const streakDays = 7;
 
   if (!user) {
     return (
-      <section className="dashboard-shell">
-        <div className="dashboard-empty">
-          <h2>Sign in to view your analytics dashboard</h2>
+      <div className="dashboard-container">
+        <div className="login-prompt">
+          <div className="prompt-icon">🚀</div>
+          <h2>Welcome Back!</h2>
+          <p>Sign in to continue your learning journey and track your progress</p>
+          <div className="prompt-buttons">
+            <button onClick={() => navigate("/Login")} className="btn-login">
+              <FaArrowRight /> Login to Dashboard
+            </button>
+            <button onClick={() => navigate("/Signup")} className="btn-signup">
+              Create Account
+            </button>
+          </div>
         </div>
-      </section>
+      </div>
     );
   }
 
   return (
+    <div className="dashboard">
+      <div className="bg-pattern"></div>
 
-    <section className="dashboard-shell">
-      <header className="dashboard-hero">
-        <div>
-          <p className="dashboard-subtitle">Welcome back</p>
-          <h1>Hi, {user.username || user.Email}</h1>
-        </div>
-      </header>
-
-      {loading ? (
-        <div className="dashboard-loading">Loading analytics...</div>
-      ) : error ? (
-        <div className="dashboard-error">{error}</div>
-      ) : (
-        <>
-          <div className="dashboard-grid">
-            <aside className="profile-panel glass-card">
-              <div className="profile-avatar-wrap">
-                <img
-                  className="profile-avatar"
-                  src={avatarPreview || 
-                    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=256&q=80"}
-                  alt="Profile avatar"
-                />
-                <label className="avatar-upload-button">
-                  Upload
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarUpload}
-                  />
-                </label>
-              </div>
-
-              <div className="profile-meta">
-                <div className="profile-name">
-                  <UserCircle size={20} />
-                  <span>{analytics?.profile?.username || user.username}</span>
-                </div>
-                <p className="profile-text">{analytics?.profile?.bio || "A focused learner building real skills."}</p>
-              </div>
-
-              <div className="profile-stats">
-                <div>
-                  <span>{formatNumber(analytics?.subjects?.length || 0)}</span>
-                  <small>Topics</small>
-                </div>
-                <div>
-                  <span>{getLevel(analytics?.stats?.totalPoints)}</span>
-                  <small>Rank</small>
-                </div>
-              </div>
-
-              <div className="profile-details">
-                <div>
-                  <span>Joined</span>
-                  <strong>{analytics?.profile?.joinedAt ? new Date(analytics.profile.joinedAt).toLocaleDateString() : "—"}</strong>
-                </div>
-                <div className="profile-details-row">
-                  <div>
-                    <span>Streak</span>
-                    <strong>{formatNumber(analytics?.stats?.streak)}</strong>
-                  </div>
-                  <div className="profile-clock">
-                    <span>Clock</span>
-                    <strong>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</strong>
-                  </div>
-                </div>
-              </div>
-
-              <div className="profile-actions">
-                <button className="ghost-button" onClick={() => setEditMode((prev) => !prev)}>
-                  {editMode ? "Cancel" : "Edit Profile"}
-                </button>
-                <button
-                  className="primary-button"
-                  onClick={handleSaveProfile}
-                  disabled={!editMode || saving}
-                >
-                  {saving ? "Saving..." : "Save profile"}
-                </button>
-              </div>
-
-              {editMode && (
-                <div className="profile-form">
-                  <label>
-                    Name
-                    <input
-                      value={profileForm.username}
-                      onChange={handleInputChange("username")}
-                      placeholder="Username"
-                    />
-                  </label>
-                  <label>
-                    Bio
-                    <textarea
-                      value={profileForm.bio}
-                      onChange={handleInputChange("bio")}
-                      placeholder="A short bio"
-                    />
-                  </label>
-                  <div className="profile-row">
-                    <label>
-                      College
-                      <input
-                        value={profileForm.college}
-                        onChange={handleInputChange("college")}
-                        placeholder="College"
-                      />
-                    </label>
-                    <label>
-                      Year
-                      <input
-                        value={profileForm.year}
-                        onChange={handleInputChange("year")}
-                        placeholder="Year"
-                      />
-                    </label>
-                  </div>
-                </div>
-              )}
-            </aside>
-
-            <main className="dashboard-main">
-              <div className="stats-grid">
-                {metrics.map((item) => (
-                  <article key={item.label} className="stat-card glass-card">
-                    <div className="stat-icon">{item.icon}</div>
-                    <div>
-                      <p className="stat-value">{item.value}</p>
-                      <p className="stat-label">{item.label}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <section className="analytics-section glass-card">
-                <div className="section-header">
-                  <div>
-                    <p className="section-overline">Performance Snapshot</p>
-                    <h2>Global analytics</h2>
-                  </div>
-                  <span>{analytics?.stats?.lastUpdated ? new Date(analytics.stats.lastUpdated).toLocaleDateString() : "Updated recently"}</span>
-                </div>
-
-                <div className="charts-grid">
-                  <div className="chart-panel growth-card">
-                  <div className="chart-panel-header">
-                    <div>
-                      <p className="growth-header-title">Points Growth</p>
-                      <p className="growth-header-subtitle">{timelineData.spanLabel}</p>
-                    </div>
-                    <div className="growth-header-values">
-                      <div>
-                        <span className="growth-main-value">{formatNumber(timelineData.totalPoints)}</span>
-                        <small>Total points</small>
-                      </div>
-                      <div>
-                        <span className="growth-secondary-value">{timelineData.growthPercent >= 0 ? `+${timelineData.growthPercent}%` : `${timelineData.growthPercent}%`}</span>
-                        <small>Growth</small>
-                      </div>
-                      <div>
-                        <span className="growth-secondary-value">{timelineData.lastActive ? formatShortDate(timelineData.lastActive) : '—'}</span>
-                        <small>Last active</small>
-                      </div>
-                    </div>
-                  </div>
-                  <GrowthLineChart
-                    points={timelineData.points}
-                    color={{ start: '#f8b4d8', end: '#b67cff' }}
-                  />
-                </div>
-                  <div className="chart-panel heatmap-card">
-                    <div className="chart-panel-header">
-                      <span>Activity Heatmap</span>
-                    </div>
-                    <HeatmapCalendar
-                      events={analytics?.analytics?.timelines?.points || []}
-                      streak={analytics?.stats?.streak || 0}
-                      weeks={32}
-                    />
-                  </div>
-                </div>
-              </section>
-
-              <section className="subjects-section">
-                <div className="section-title-row">
-                  <div>
-                    <p className="section-overline">Subject breakdown</p>
-                    <h2>Active topics</h2>
-                  </div>
-                  <button onClick={() => navigate("/lessons")} className="ghost-button">
-                    Explore lessons <ArrowRight size={16} />
-                  </button>
-                </div>
-
-                <div className="subject-grid">
-                  {subjectCards.length ? (
-                    subjectCards.map((subject) => (
-                      <article key={subject.title} className="subject-card glass-card">
-                        <div className="subject-header">
-                          <div>
-                            <p>{subject.title}</p>
-                            <small>{subject.lessons} lessons completed</small>
-                          </div>
-                          <div className="subject-score">
-                            {subject.completion > 0 ? `${subject.completion}%` : "—"}
-                          </div>
-                        </div>
-                        <div className="subject-meta-row">
-                          <span>Last active: {subject.lastActivity ? formatShortDate(subject.lastActivity) : "—"}</span>
-                        </div>
-                        <SubjectTrend
-                          completedLessons={subject.lessons}
-                          completion={subject.completion}
-                          totalLessons={subject.totalLessons}
-                          gradientId={`subject-${subject.title.toLowerCase().replace(/\s+/g, '-')}`}
-                          color={getSubjectGradient(subject.title)}
-                        />
-                      </article>
-                    ))
-                  ) : (
-                    <div className="empty-state-card">
-                      <h3>No subject activity yet</h3>
-                      <p>Complete your first lesson to populate the topic charts.</p>
-                      <button className="primary-button" onClick={() => navigate("/lessons")}>Start learning</button>
-                    </div>
-                  )}
-                </div>
-              </section>
-            </main>
-          </div>
-
-          {analytics && analytics.subjects.length === 0 && (
-            <div className="dashboard-empty-state glass-card">
-              <h3>No progress history yet</h3>
-              <p>As you complete lessons, your analytics will appear here in real time.</p>
-              <button className="primary-button" onClick={() => navigate("/lessons")}>Go to lessons</button>
+      {/* Logout Confirmation Modal */}
+      {showLogoutConfirm && (
+        <div className="modal-overlay" onClick={() => setShowLogoutConfirm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-icon">👋</div>
+            <h3>Ready to leave?</h3>
+            <p>Your progress has been saved. Come back soon!</p>
+            <div className="modal-buttons">
+              <button className="modal-cancel" onClick={() => setShowLogoutConfirm(false)}>Cancel</button>
+              <button className="modal-confirm" onClick={handleLogout}>Logout</button>
             </div>
-          )}
-        </>
+          </div>
+        </div>
       )}
-    </section>
+
+      {/* Header Section - Centered */}
+      <div className="dashboard-header">
+        <div className="header-left">
+          <div className="greeting-badge">
+            <span className="greeting-time">{greeting}</span>
+            <div className="current-time">
+              <FaClock /> {currentTime}
+            </div>
+          </div>
+          <div className="greeting-text">
+            <h1>
+              {user.username}!
+              <span className="wave-emoji">👋</span>
+            </h1>
+            <p className="motivation-text">Ready to level up your coding skills today?</p>
+          </div>
+        </div>
+        <div className="header-right">
+          <div className="streak-card">
+            <FaFire className="streak-icon" />
+            <div className="streak-info">
+              <span className="streak-days">{streakDays}</span>
+              <span className="streak-label">Day Streak</span>
+            </div>
+          </div>
+          <button className="logout-btn" onClick={() => setShowLogoutConfirm(true)}>
+            <FaSignOutAlt />
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Stats Row - Centered */}
+      <div className="stats-row">
+        <div className="stat-card-horizontal">
+          <div className="stat-icon-circle">
+            <FaTrophy />
+          </div>
+          <div className="stat-info-horizontal">
+            <h3>Overall Progress</h3>
+            <div className="stat-value-progress">
+              <span className="percentage">{overallProgress}%</span>
+              <div className="progress-bar-small">
+                <div className="progress-fill-small" style={{ width: `${overallProgress}%` }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="stat-card-horizontal">
+          <div className="stat-icon-circle">
+            <FaBookOpen />
+          </div>
+          <div className="stat-info-horizontal">
+            <h3>Lessons Completed</h3>
+            <div className="stat-value">
+              <span className="number">{totalCompleted}</span>
+              <span className="total">/{totalLessons}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="stat-card-horizontal">
+          <div className="stat-icon-circle">
+            <FaCertificate />
+          </div>
+          <div className="stat-info-horizontal">
+            <h3>Certificates Earned</h3>
+            <div className="stat-value">
+              <span className="number">{Math.floor(totalCompleted / 5)}</span>
+              <span className="total">🏆</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="quick-actions">
+        <button className="action-btn" onClick={() => navigate("/compiler")}>
+          <FaCode /> Live Code Editor
+        </button>
+        <button className="action-btn" onClick={() => navigate("/leaderboard")}>
+          <FaMedal /> Leaderboard
+        </button>
+        <button className="action-btn" onClick={() => navigate("/certificate")}>
+          <FaCertificate /> My Certificates
+        </button>
+      </div>
+
+      {/* User Info Card - Centered & Vertical Layout */}
+      <div className="user-info-card">
+        <div className="card-header">
+          <div className="card-header-left">
+            <FaUserCircle className="card-icon" />
+            <h2>Profile Overview</h2>
+          </div>
+          <button className="edit-profile">Edit Profile</button>
+        </div>
+        <div className="info-vertical">
+          <div className="info-item-vertical">
+            <FaEnvelope className="info-icon" />
+            <div className="info-content">
+              <label>Email Address</label>
+              <p>{user.email || user.Email}</p>
+            </div>
+          </div>
+          <div className="info-item-vertical">
+            <FaUniversity className="info-icon" />
+            <div className="info-content">
+              <label>Institution</label>
+              <p>{user.college || "Not specified"}</p>
+            </div>
+          </div>
+          <div className="info-item-vertical">
+            <FaGraduationCap className="info-icon" />
+            <div className="info-content">
+              <label>Academic Year</label>
+              <p>{user.year || "Not specified"}</p>
+            </div>
+          </div>
+          <div className="info-item-vertical">
+            <FaCalendarAlt className="info-icon" />
+            <div className="info-content">
+              <label>Member Since</label>
+              <p>{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Courses Section */}
+      <div className="courses-section">
+        <div className="section-header">
+          <div className="header-badge">
+            <FaArrowUp />
+            <span>Learning Path</span>
+          </div>
+          <h2>Your Course Journey</h2>
+          <p>Track your progress and continue where you left off</p>
+        </div>
+
+        <div className="courses-grid">
+          {courses.map((course, index) => (
+            <button
+              key={course.name}
+              onClick={() => handleViewReport(course.name)}
+              className="course-card-btn"
+              onMouseEnter={() => setHoveredCourse(index)}
+              onMouseLeave={() => setHoveredCourse(null)}
+              style={{
+                transform: hoveredCourse === index ? 'translateY(-8px)' : 'translateY(0)',
+              }}
+            >
+              <div className="course-icon" style={{ background: course.bgColor }}>
+                <span style={{ color: course.color }}>{course.icon}</span>
+              </div>
+              <div className="course-details">
+                <div className="course-header">
+                  <h3>{course.name}</h3>
+                  <span className="course-progress-percent">{course.progress}%</span>
+                </div>
+                <div className="course-progress-bar">
+                  <div className="course-progress-fill" style={{ width: `${course.progress}%`, background: course.color }}></div>
+                </div>
+                <div className="course-stats">
+                  <span>{course.completed}/{course.lessons} lessons</span>
+                  {course.progress > 0 && <FaStar className="star-icon" style={{ color: course.color }} />}
+                </div>
+              </div>
+              <div className="course-arrow">
+                <FaArrowRight />
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="dashboard-footer">
+        <div className="footer-content">
+          <p>© 2024 CodeVibe - Learn. Practice. Master.</p>
+          <div className="social-links">
+            <a href="#"><FaGithub /></a>
+            <a href="#"><FaLinkedin /></a>
+            <a href="#"><FaTwitter /></a>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .dashboard {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0f0c29 0%, #1a1a2e 50%, #16213e 100%);
+          padding: 30px 50px;
+          position: relative;
+          overflow-x: hidden;
+        }
+
+        .bg-pattern {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+          background-size: 30px 30px;
+          pointer-events: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+          background: linear-gradient(135deg, #1e1e3f, #16162e);
+          border-radius: 24px;
+          padding: 40px;
+          text-align: center;
+          max-width: 400px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          animation: slideUp 0.3s ease;
+        }
+
+        .modal-icon {
+          font-size: 4rem;
+          margin-bottom: 20px;
+        }
+
+        .modal-content h3 {
+          color: white;
+          margin-bottom: 10px;
+          font-size: 1.5rem;
+        }
+
+        .modal-content p {
+          color: #a0a0a0;
+          margin-bottom: 30px;
+        }
+
+        .modal-buttons {
+          display: flex;
+          gap: 15px;
+          justify-content: center;
+        }
+
+        .modal-cancel, .modal-confirm {
+          padding: 10px 24px;
+          border-radius: 10px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+        }
+
+        .modal-cancel {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+
+        .modal-cancel:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-confirm {
+          background: #ff4d4d;
+          color: white;
+        }
+
+        .modal-confirm:hover {
+          background: #ff3333;
+          transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+          from { transform: translateY(50px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Login Prompt */
+        .dashboard-container {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0f0c29 0%, #1a1a2e 50%, #16213e 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+
+        .login-prompt {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 32px;
+          padding: 50px;
+          text-align: center;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          max-width: 450px;
+          animation: fadeInUp 0.6s ease;
+        }
+
+        .prompt-icon {
+          font-size: 5rem;
+          margin-bottom: 20px;
+          animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+
+        .login-prompt h2 {
+          color: white;
+          margin-bottom: 15px;
+          font-size: 2rem;
+        }
+
+        .login-prompt p {
+          color: #a0a0a0;
+          margin-bottom: 35px;
+        }
+
+        .prompt-buttons {
+          display: flex;
+          gap: 15px;
+          flex-direction: column;
+        }
+
+        .btn-login, .btn-signup {
+          padding: 14px 28px;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .btn-login {
+          background: linear-gradient(135deg, #ff4d4d, #ff8c4d);
+          color: white;
+        }
+
+        .btn-login:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 20px rgba(255, 77, 77, 0.4);
+        }
+
+        .btn-signup {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-signup:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard Header - Centered */
+        .dashboard-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 40px;
+          flex-wrap: wrap;
+          gap: 20px;
+          position: relative;
+          z-index: 1;
+          background: rgba(0, 0, 0, 0.3);
+          padding: 20px 25px;
+          border-radius: 20px;
+          backdrop-filter: blur(10px);
+          max-width: 900px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .header-left {
+          flex: 1;
+        }
+
+        .greeting-badge {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 15px;
+          flex-wrap: wrap;
+        }
+
+        .greeting-time {
+          background: rgba(255, 77, 77, 0.2);
+          padding: 8px 20px;
+          border-radius: 25px;
+          font-size: 1rem;
+          color: #ff4d4d;
+          font-weight: 600;
+          letter-spacing: 1px;
+        }
+
+        .current-time {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 8px 20px;
+          border-radius: 25px;
+          font-size: 1rem;
+          color: #ffffff;
+          font-weight: 500;
+        }
+
+        .greeting-text h1 {
+          font-size: 2.8rem;
+          color: white;
+          margin: 0 0 10px 0;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          flex-wrap: wrap;
+        }
+
+        .wave-emoji {
+          display: inline-block;
+          animation: wave 1s infinite;
+          font-size: 2.5rem;
+        }
+
+        @keyframes wave {
+          0%, 100% { transform: rotate(0deg); }
+          50% { transform: rotate(20deg); }
+        }
+
+        .motivation-text {
+          color: #c0c0c0;
+          margin: 8px 0 0;
+          font-size: 1.1rem;
+          font-weight: 400;
+        }
+
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .streak-card {
+          background: linear-gradient(135deg, rgba(255, 77, 77, 0.2), rgba(255, 140, 77, 0.15));
+          border-radius: 16px;
+          padding: 12px 24px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          border: 1px solid rgba(255, 77, 77, 0.3);
+        }
+
+        .streak-icon {
+          font-size: 2rem;
+          color: #ff8c4d;
+        }
+
+        .streak-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .streak-days {
+          font-size: 1.8rem;
+          font-weight: bold;
+          color: white;
+          line-height: 1;
+        }
+
+        .streak-label {
+          font-size: 0.8rem;
+          color: #c0c0c0;
+        }
+
+        .logout-btn {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 28px;
+          background: rgba(255, 77, 77, 0.15);
+          border: 1px solid rgba(255, 77, 77, 0.3);
+          border-radius: 12px;
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 1rem;
+        }
+
+        .logout-btn:hover {
+          background: rgba(255, 77, 77, 0.3);
+          border-color: #ff4d4d;
+          transform: translateY(-2px);
+        }
+
+        /* Stats Row - Centered */
+        .stats-row {
+          display: flex;
+          gap: 25px;
+          margin-bottom: 40px;
+          position: relative;
+          z-index: 1;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .stat-card-horizontal {
+          flex: 0 1 280px;
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 20px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+
+        .stat-card-horizontal:hover {
+          transform: translateY(-4px);
+          background: rgba(255, 255, 255, 0.08);
+          border-color: rgba(255, 77, 77, 0.3);
+        }
+
+        .stat-icon-circle {
+          width: 55px;
+          height: 55px;
+          background: rgba(255, 77, 77, 0.15);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.6rem;
+          color: #ff4d4d;
+        }
+
+        .stat-info-horizontal {
+          flex: 1;
+        }
+
+        .stat-info-horizontal h3 {
+          color: #c0c0c0;
+          font-size: 0.8rem;
+          margin: 0 0 8px 0;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .stat-value {
+          display: flex;
+          align-items: baseline;
+          gap: 5px;
+        }
+
+        .stat-value .number {
+          font-size: 1.8rem;
+          font-weight: bold;
+          color: white;
+        }
+
+        .stat-value .total {
+          font-size: 1rem;
+          color: #c0c0c0;
+        }
+
+        .stat-value-progress {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .stat-value-progress .percentage {
+          font-size: 1.8rem;
+          font-weight: bold;
+          color: white;
+        }
+
+        .progress-bar-small {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+          height: 6px;
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .progress-fill-small {
+          background: linear-gradient(90deg, #ff4d4d, #ff8c4d);
+          height: 100%;
+          border-radius: 10px;
+          transition: width 0.5s ease;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 40px;
+          flex-wrap: wrap;
+          position: relative;
+          z-index: 1;
+          justify-content: center;
+        }
+
+        .action-btn {
+          background: linear-gradient(135deg, rgba(255, 77, 77, 0.15), rgba(255, 140, 77, 0.1));
+          border: 1px solid rgba(255, 77, 77, 0.2);
+          border-radius: 12px;
+          padding: 12px 24px;
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          transition: all 0.3s ease;
+          font-size: 0.95rem;
+        }
+
+        .action-btn:hover {
+          background: rgba(255, 77, 77, 0.25);
+          transform: translateY(-2px);
+          border-color: #ff4d4d;
+        }
+
+        /* User Info Card - Centered & Vertical Layout */
+        .user-info-card {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 25px 30px;
+          margin-bottom: 40px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          z-index: 1;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 25px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          flex-wrap: wrap;
+          gap: 15px;
+        }
+
+        .card-header-left {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .card-header-left h2 {
+          color: white;
+          margin: 0;
+          font-size: 1.3rem;
+        }
+
+        .card-icon {
+          font-size: 1.8rem;
+          color: #ff4d4d;
+        }
+
+        .edit-profile {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 8px 20px;
+          border-radius: 8px;
+          color: #c0c0c0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 0.85rem;
+          font-weight: 500;
+        }
+
+        .edit-profile:hover {
+          background: rgba(255, 77, 77, 0.1);
+          color: #ff4d4d;
+          border-color: #ff4d4d;
+        }
+
+        .info-vertical {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .info-item-vertical {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          padding: 12px 15px;
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 12px;
+          transition: all 0.3s ease;
+        }
+
+        .info-item-vertical:hover {
+          background: rgba(255, 255, 255, 0.06);
+          transform: translateX(5px);
+        }
+
+        .info-icon {
+          font-size: 1.3rem;
+          color: #ff4d4d;
+          width: 40px;
+          text-align: center;
+        }
+
+        .info-content {
+          flex: 1;
+        }
+
+        .info-content label {
+          font-size: 0.7rem;
+          color: #c0c0c0;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          display: block;
+          margin-bottom: 4px;
+        }
+
+        .info-content p {
+          color: white;
+          margin: 0;
+          font-weight: 500;
+          font-size: 1rem;
+        }
+
+        /* Courses Section */
+        .courses-section {
+          position: relative;
+          z-index: 1;
+        }
+
+        .section-header {
+          text-align: center;
+          margin-bottom: 40px;
+        }
+
+        .header-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 77, 77, 0.15);
+          padding: 8px 20px;
+          border-radius: 25px;
+          color: #ff4d4d;
+          font-size: 0.9rem;
+          margin-bottom: 15px;
+          font-weight: 500;
+        }
+
+        .section-header h2 {
+          color: white;
+          font-size: 2.2rem;
+          margin: 0 0 10px;
+        }
+
+        .section-header p {
+          color: #c0c0c0;
+          margin: 0;
+          font-size: 1rem;
+        }
+
+        .courses-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+          gap: 25px;
+        }
+
+        .course-card-btn {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 25px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          width: 100%;
+          text-align: left;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .course-card-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+          transition: left 0.5s ease;
+        }
+
+        .course-card-btn:hover::before {
+          left: 100%;
+        }
+
+        .course-icon {
+          width: 70px;
+          height: 70px;
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          transition: all 0.3s ease;
+          flex-shrink: 0;
+        }
+
+        .course-card-btn:hover .course-icon {
+          transform: scale(1.05);
+        }
+
+        .course-details {
+          flex: 1;
+        }
+
+        .course-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: 12px;
+        }
+
+        .course-header h3 {
+          color: white;
+          margin: 0;
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+
+        .course-progress-percent {
+          font-size: 0.9rem;
+          font-weight: bold;
+          color: #ff4d4d;
+        }
+
+        .course-progress-bar {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+          height: 8px;
+          margin-bottom: 12px;
+          overflow: hidden;
+        }
+
+        .course-progress-fill {
+          height: 100%;
+          border-radius: 10px;
+          transition: width 0.3s ease;
+        }
+
+        .course-stats {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.85rem;
+          color: #c0c0c0;
+        }
+
+        .star-icon {
+          font-size: 0.85rem;
+        }
+
+        .course-arrow {
+          color: #c0c0c0;
+          transition: all 0.3s ease;
+          opacity: 0;
+          transform: translateX(-10px);
+          font-size: 1.2rem;
+        }
+
+        .course-card-btn:hover .course-arrow {
+          opacity: 1;
+          transform: translateX(0);
+          color: #ff4d4d;
+        }
+
+        /* Footer */
+        .dashboard-footer {
+          margin-top: 60px;
+          padding-top: 30px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          position: relative;
+          z-index: 1;
+        }
+
+        .footer-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        .footer-content p {
+          color: #c0c0c0;
+          font-size: 0.9rem;
+        }
+
+        .social-links {
+          display: flex;
+          gap: 20px;
+        }
+
+        .social-links a {
+          color: #c0c0c0;
+          font-size: 1.3rem;
+          transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+          color: #ff4d4d;
+          transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+          .stats-row {
+            flex-direction: column;
+            align-items: center;
+          }
+          
+          .stat-card-horizontal {
+            width: 100%;
+            max-width: 300px;
+          }
+
+          .courses-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .user-info-card {
+            max-width: 90%;
+            padding: 20px;
+          }
+
+          .dashboard-header {
+            max-width: 95%;
+            padding: 15px 20px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .dashboard {
+            padding: 20px;
+          }
+
+          .greeting-text h1 {
+            font-size: 2rem;
+          }
+
+          .motivation-text {
+            font-size: 0.95rem;
+          }
+
+          .dashboard-header {
+            padding: 15px;
+          }
+
+          .greeting-time, .current-time {
+            font-size: 0.85rem;
+            padding: 6px 15px;
+          }
+
+          .streak-card {
+            padding: 8px 16px;
+          }
+
+          .streak-days {
+            font-size: 1.3rem;
+          }
+
+          .footer-content {
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .quick-actions {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .action-btn {
+            justify-content: center;
+            width: 100%;
+            max-width: 220px;
+          }
+
+          .info-item-vertical {
+            padding: 10px 12px;
+          }
+          
+          .info-icon {
+            font-size: 1.1rem;
+            width: 35px;
+          }
+          
+          .info-content p {
+            font-size: 0.9rem;
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
