@@ -1,6 +1,6 @@
 # Contributor Leaderboard
 
-This leaderboard is generated automatically for `divyagsharma2006-blip/CODEVIBE-` by GitHub Actions.
+This leaderboard is generated automatically for `JiyaBatra/CODEVIBE-` by GitHub Actions.
 
 Last updated: 2026-05-24
 
@@ -18,14 +18,14 @@ Last updated: 2026-05-24
 | 2 | [@Aayuiiitmg](https://github.com/Aayuiiitmg) | 104 | 12 | 8 | 0 |
 | 3 | [@pranav-cholleti](https://github.com/pranav-cholleti) | 86 | 18 | 3 | 4 |
 | 4 | [@Mahi-19-design](https://github.com/Mahi-19-design) | 65 | 5 | 4 | 3 |
-| 5 | [@riteshpatil9686-lgtm](https://github.com/riteshpatil9686-lgtm) | 47 | 11 | 2 | 1 |
-| 6 | [@Smrithi-krishna](https://github.com/Smrithi-krishna) | 46 | 8 | 2 | 2 |
-| 7 | [@theblag](https://github.com/theblag) | 44 | 2 | 2 | 4 |
-| 8 | [@YashvardhanJani](https://github.com/YashvardhanJani) | 42 | 6 | 2 | 2 |
-| 9 | [@StarDustNova-57](https://github.com/StarDustNova-57) | 41 | 3 | 2 | 3 |
-| 10 | [@advikdivekar](https://github.com/advikdivekar) | 40 | 5 | 3 | 0 |
-| 11 | [@Tech4Aditya](https://github.com/Tech4Aditya) | 36 | 3 | 2 | 2 |
-| 12 | [@divyagsharma2006-blip](https://github.com/divyagsharma2006-blip) | 34 | 2 | 2 | 2 |
+| 5 | [@divyagsharma2006-blip](https://github.com/divyagsharma2006-blip) | 49 | 2 | 3 | 3 |
+| 6 | [@riteshpatil9686-lgtm](https://github.com/riteshpatil9686-lgtm) | 47 | 11 | 2 | 1 |
+| 7 | [@Smrithi-krishna](https://github.com/Smrithi-krishna) | 46 | 8 | 2 | 2 |
+| 8 | [@theblag](https://github.com/theblag) | 44 | 2 | 2 | 4 |
+| 9 | [@YashvardhanJani](https://github.com/YashvardhanJani) | 42 | 6 | 2 | 2 |
+| 10 | [@StarDustNova-57](https://github.com/StarDustNova-57) | 41 | 3 | 2 | 3 |
+| 11 | [@advikdivekar](https://github.com/advikdivekar) | 40 | 5 | 3 | 0 |
+| 12 | [@Tech4Aditya](https://github.com/Tech4Aditya) | 36 | 3 | 2 | 2 |
 | 13 | [@namrarafique93-del](https://github.com/namrarafique93-del) | 34 | 2 | 2 | 2 |
 | 14 | [@jagrati7305](https://github.com/jagrati7305) | 31 | 3 | 2 | 1 |
 | 15 | [@indresh404](https://github.com/indresh404) | 27 | 6 | 1 | 1 |
@@ -46,10 +46,10 @@ Last updated: 2026-05-24
 | 30 | [@Shashankpatilrcr](https://github.com/Shashankpatilrcr) | 17 | 1 | 1 | 1 |
 | 31 | [@suhanimaurya05](https://github.com/suhanimaurya05) | 17 | 1 | 1 | 1 |
 | 32 | [@tejaswibellapu](https://github.com/tejaswibellapu) | 17 | 1 | 1 | 1 |
-| 33 | [@twinkle0tech](https://github.com/twinkle0tech) | 17 | 1 | 1 | 1 |
-| 34 | [@Haritha-054](https://github.com/Haritha-054) | 15 | 0 | 0 | 3 |
-| 35 | [@Ridima28](https://github.com/Ridima28) | 15 | 0 | 1 | 1 |
-| 36 | [@shivani11jadhav](https://github.com/shivani11jadhav) | 15 | 0 | 1 | 1 |
+| 33 | [@Haritha-054](https://github.com/Haritha-054) | 15 | 0 | 0 | 3 |
+| 34 | [@Ridima28](https://github.com/Ridima28) | 15 | 0 | 1 | 1 |
+| 35 | [@shivani11jadhav](https://github.com/shivani11jadhav) | 15 | 0 | 1 | 1 |
+| 36 | [@twinkle0tech](https://github.com/twinkle0tech) | 15 | 0 | 1 | 1 |
 | 37 | [@JANHAVI40](https://github.com/JANHAVI40) | 12 | 1 | 1 | 0 |
 | 38 | [@jayesh-thar](https://github.com/jayesh-thar) | 10 | 0 | 0 | 2 |
 | 39 | [@sofeel](https://github.com/sofeel) | 8 | 4 | 0 | 0 |
