@@ -90,7 +90,8 @@ Last updated: 2026-05-26
 | 74 | [@stuti-sudo-123](https://github.com/stuti-sudo-123) | 5 | 0 | 0 | 1 |
 | 75 | [@Subha12125](https://github.com/Subha12125) | 5 | 0 | 0 | 1 |
 | 76 | [@Suhani-ai-dev](https://github.com/Suhani-ai-dev) | 5 | 0 | 0 | 1 |
-| 77 | [@SupriyaShirsat05](https://github.com/SupriyaShirsat05) | 5 | 0 | 0 | 1 |
-| 78 | [@tanvi1107](https://github.com/tanvi1107) | 5 | 0 | 0 | 1 |
-| 79 | [@varsha-2503](https://github.com/varsha-2503) | 5 | 0 | 0 | 1 |
-| 80 | [@yashvini-chirri](https://github.com/yashvini-chirri) | 5 | 0 | 0 | 1 |
+| 77 | [@sujitha-kotyada](https://github.com/sujitha-kotyada) | 5 | 0 | 0 | 1 |
+| 78 | [@SupriyaShirsat05](https://github.com/SupriyaShirsat05) | 5 | 0 | 0 | 1 |
+| 79 | [@tanvi1107](https://github.com/tanvi1107) | 5 | 0 | 0 | 1 |
+| 80 | [@varsha-2503](https://github.com/varsha-2503) | 5 | 0 | 0 | 1 |
+| 81 | [@yashvini-chirri](https://github.com/yashvini-chirri) | 5 | 0 | 0 | 1 |
