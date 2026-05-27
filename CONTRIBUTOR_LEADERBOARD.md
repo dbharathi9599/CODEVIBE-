@@ -33,9 +33,9 @@ Last updated: 2026-05-27
 | 17 | [@Tech4Aditya](https://github.com/Tech4Aditya) | 36 | 3 | 2 | 2 |
 | 18 | [@alenalex-009](https://github.com/alenalex-009) | 34 | 2 | 2 | 2 |
 | 19 | [@RehanAhmad25](https://github.com/RehanAhmad25) | 34 | 2 | 2 | 2 |
-| 20 | [@indresh404](https://github.com/indresh404) | 32 | 6 | 1 | 2 |
-| 21 | [@jagrati7305](https://github.com/jagrati7305) | 31 | 3 | 2 | 1 |
-| 22 | [@Siddh2024](https://github.com/Siddh2024) | 30 | 0 | 1 | 4 |
+| 20 | [@Siddh2024](https://github.com/Siddh2024) | 34 | 2 | 1 | 4 |
+| 21 | [@indresh404](https://github.com/indresh404) | 32 | 6 | 1 | 2 |
+| 22 | [@jagrati7305](https://github.com/jagrati7305) | 31 | 3 | 2 | 1 |
 | 23 | [@tazmeen24](https://github.com/tazmeen24) | 29 | 7 | 1 | 1 |
 | 24 | [@shreyamevada6](https://github.com/shreyamevada6) | 26 | 3 | 1 | 2 |
 | 25 | [@RishiMaskare](https://github.com/RishiMaskare) | 24 | 2 | 1 | 2 |
@@ -64,10 +64,10 @@ Last updated: 2026-05-27
 | 48 | [@JANHAVI40](https://github.com/JANHAVI40) | 12 | 1 | 1 | 0 |
 | 49 | [@MD-Mushfiqur123](https://github.com/MD-Mushfiqur123) | 12 | 1 | 1 | 0 |
 | 50 | [@reshukushwah28](https://github.com/reshukushwah28) | 12 | 1 | 1 | 0 |
-| 51 | [@annrose2277-glitch](https://github.com/annrose2277-glitch) | 10 | 0 | 0 | 2 |
-| 52 | [@jayesh-thar](https://github.com/jayesh-thar) | 10 | 0 | 0 | 2 |
-| 53 | [@Owais-Siddique-11](https://github.com/Owais-Siddique-11) | 10 | 0 | 0 | 2 |
-| 54 | [@Sakshisen12](https://github.com/Sakshisen12) | 10 | 0 | 1 | 0 |
+| 51 | [@Sakshisen12](https://github.com/Sakshisen12) | 12 | 1 | 1 | 0 |
+| 52 | [@annrose2277-glitch](https://github.com/annrose2277-glitch) | 10 | 0 | 0 | 2 |
+| 53 | [@jayesh-thar](https://github.com/jayesh-thar) | 10 | 0 | 0 | 2 |
+| 54 | [@Owais-Siddique-11](https://github.com/Owais-Siddique-11) | 10 | 0 | 0 | 2 |
 | 55 | [@sujitha-kotyada](https://github.com/sujitha-kotyada) | 10 | 0 | 0 | 2 |
 | 56 | [@Varshith111](https://github.com/Varshith111) | 10 | 0 | 0 | 2 |
 | 57 | [@sofeel](https://github.com/sofeel) | 8 | 4 | 0 | 0 |
