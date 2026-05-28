@@ -341,7 +341,7 @@ const Courses = () => {
                 title={wishlist.includes(course.title) ? "Remove from wishlist" : "Add to wishlist"}
                 style={{
                   position: 'absolute',
-                  top: '12px',
+                  top: '0px',
                   left: '16px',
                   zIndex: 2,
                   background: 'none',
