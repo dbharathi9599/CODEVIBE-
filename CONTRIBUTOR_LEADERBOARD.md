@@ -2,7 +2,7 @@
 
 This leaderboard is generated automatically for `JiyaBatra/CODEVIBE-` by GitHub Actions.
 
-Last updated: 2026-05-27
+Last updated: 2026-05-28
 
 ## Scoring
 
@@ -65,11 +65,11 @@ Last updated: 2026-05-27
 | 49 | [@MD-Mushfiqur123](https://github.com/MD-Mushfiqur123) | 12 | 1 | 1 | 0 |
 | 50 | [@reshukushwah28](https://github.com/reshukushwah28) | 12 | 1 | 1 | 0 |
 | 51 | [@Sakshisen12](https://github.com/Sakshisen12) | 12 | 1 | 1 | 0 |
-| 52 | [@annrose2277-glitch](https://github.com/annrose2277-glitch) | 10 | 0 | 0 | 2 |
-| 53 | [@jayesh-thar](https://github.com/jayesh-thar) | 10 | 0 | 0 | 2 |
-| 54 | [@Owais-Siddique-11](https://github.com/Owais-Siddique-11) | 10 | 0 | 0 | 2 |
-| 55 | [@sujitha-kotyada](https://github.com/sujitha-kotyada) | 10 | 0 | 0 | 2 |
-| 56 | [@thedaripanator](https://github.com/thedaripanator) | 10 | 0 | 1 | 0 |
+| 52 | [@thedaripanator](https://github.com/thedaripanator) | 12 | 1 | 1 | 0 |
+| 53 | [@annrose2277-glitch](https://github.com/annrose2277-glitch) | 10 | 0 | 0 | 2 |
+| 54 | [@jayesh-thar](https://github.com/jayesh-thar) | 10 | 0 | 0 | 2 |
+| 55 | [@Owais-Siddique-11](https://github.com/Owais-Siddique-11) | 10 | 0 | 0 | 2 |
+| 56 | [@sujitha-kotyada](https://github.com/sujitha-kotyada) | 10 | 0 | 0 | 2 |
 | 57 | [@Varshith111](https://github.com/Varshith111) | 10 | 0 | 0 | 2 |
 | 58 | [@sofeel](https://github.com/sofeel) | 8 | 4 | 0 | 0 |
 | 59 | [@0411-bokilshruti](https://github.com/0411-bokilshruti) | 5 | 0 | 0 | 1 |
