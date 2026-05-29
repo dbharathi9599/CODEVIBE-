@@ -16,10 +16,10 @@ Last updated: 2026-05-29
 | --- | --- | ---: | ---: | ---: | ---: |
 | 1 | [@sricharan-213](https://github.com/sricharan-213) | 131 | 8 | 7 | 9 |
 | 2 | [@Aayuiiitmg](https://github.com/Aayuiiitmg) | 104 | 12 | 8 | 0 |
-| 3 | [@namrarafique93-del](https://github.com/namrarafique93-del) | 97 | 11 | 5 | 5 |
-| 4 | [@KGFCH2](https://github.com/KGFCH2) | 87 | 1 | 1 | 15 |
-| 5 | [@pranav-cholleti](https://github.com/pranav-cholleti) | 86 | 18 | 3 | 4 |
-| 6 | [@Pcmhacker-piro](https://github.com/Pcmhacker-piro) | 85 | 0 | 2 | 13 |
+| 3 | [@Pcmhacker-piro](https://github.com/Pcmhacker-piro) | 100 | 0 | 3 | 14 |
+| 4 | [@namrarafique93-del](https://github.com/namrarafique93-del) | 97 | 11 | 5 | 5 |
+| 5 | [@KGFCH2](https://github.com/KGFCH2) | 87 | 1 | 1 | 15 |
+| 6 | [@pranav-cholleti](https://github.com/pranav-cholleti) | 86 | 18 | 3 | 4 |
 | 7 | [@Mahi-19-design](https://github.com/Mahi-19-design) | 82 | 6 | 5 | 4 |
 | 8 | [@DebasmitaBose0](https://github.com/DebasmitaBose0) | 75 | 0 | 0 | 15 |
 | 9 | [@divyagsharma2006-blip](https://github.com/divyagsharma2006-blip) | 65 | 5 | 4 | 3 |
