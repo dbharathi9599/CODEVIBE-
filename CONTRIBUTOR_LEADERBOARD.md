@@ -118,8 +118,9 @@ Last updated: 2026-05-29
 | 102 | [@Suhani-ai-dev](https://github.com/Suhani-ai-dev) | 5 | 0 | 0 | 1 |
 | 103 | [@SupriyaShirsat05](https://github.com/SupriyaShirsat05) | 5 | 0 | 0 | 1 |
 | 104 | [@tanvi1107](https://github.com/tanvi1107) | 5 | 0 | 0 | 1 |
-| 105 | [@vaibhav051422-collab](https://github.com/vaibhav051422-collab) | 5 | 0 | 0 | 1 |
-| 106 | [@varsha-2503](https://github.com/varsha-2503) | 5 | 0 | 0 | 1 |
-| 107 | [@VEDIKAGULWANI](https://github.com/VEDIKAGULWANI) | 5 | 0 | 0 | 1 |
-| 108 | [@weiwei-gitch](https://github.com/weiwei-gitch) | 5 | 0 | 0 | 1 |
-| 109 | [@yashvini-chirri](https://github.com/yashvini-chirri) | 5 | 0 | 0 | 1 |
+| 105 | [@Vaghasiya-Jemit-kanaiyalal](https://github.com/Vaghasiya-Jemit-kanaiyalal) | 5 | 0 | 0 | 1 |
+| 106 | [@vaibhav051422-collab](https://github.com/vaibhav051422-collab) | 5 | 0 | 0 | 1 |
+| 107 | [@varsha-2503](https://github.com/varsha-2503) | 5 | 0 | 0 | 1 |
+| 108 | [@VEDIKAGULWANI](https://github.com/VEDIKAGULWANI) | 5 | 0 | 0 | 1 |
+| 109 | [@weiwei-gitch](https://github.com/weiwei-gitch) | 5 | 0 | 0 | 1 |
+| 110 | [@yashvini-chirri](https://github.com/yashvini-chirri) | 5 | 0 | 0 | 1 |
