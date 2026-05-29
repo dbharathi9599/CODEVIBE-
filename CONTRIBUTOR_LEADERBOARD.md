@@ -30,10 +30,10 @@ Last updated: 2026-05-29
 | 14 | [@riteshpatil9686-lgtm](https://github.com/riteshpatil9686-lgtm) | 47 | 11 | 2 | 1 |
 | 15 | [@Smrithi-krishna](https://github.com/Smrithi-krishna) | 46 | 8 | 2 | 2 |
 | 16 | [@ArshiBansal](https://github.com/ArshiBansal) | 45 | 5 | 2 | 3 |
-| 17 | [@theblag](https://github.com/theblag) | 44 | 2 | 2 | 4 |
-| 18 | [@YashvardhanJani](https://github.com/YashvardhanJani) | 42 | 6 | 2 | 2 |
-| 19 | [@advikdivekar](https://github.com/advikdivekar) | 40 | 5 | 3 | 0 |
-| 20 | [@Dhruvil20060](https://github.com/Dhruvil20060) | 39 | 2 | 2 | 3 |
+| 17 | [@Dhruvil20060](https://github.com/Dhruvil20060) | 44 | 2 | 2 | 4 |
+| 18 | [@theblag](https://github.com/theblag) | 44 | 2 | 2 | 4 |
+| 19 | [@YashvardhanJani](https://github.com/YashvardhanJani) | 42 | 6 | 2 | 2 |
+| 20 | [@advikdivekar](https://github.com/advikdivekar) | 40 | 5 | 3 | 0 |
 | 21 | [@suryagkp2007-cmyk](https://github.com/suryagkp2007-cmyk) | 36 | 3 | 2 | 2 |
 | 22 | [@Tech4Aditya](https://github.com/Tech4Aditya) | 36 | 3 | 2 | 2 |
 | 23 | [@shivani11jadhav](https://github.com/shivani11jadhav) | 35 | 0 | 2 | 3 |
