@@ -685,7 +685,7 @@ const Dashboard = () => {
       },
       {
         label: "Subjects Active",
-        value: formatNumber(analytics?.subjects.length || 0),
+        value: formatNumber(analytics?.subjects?.length || 0),
         icon: <LayoutDashboard />,
       },
       {
@@ -699,14 +699,14 @@ const Dashboard = () => {
         icon: <Wand2 />,
       },
       {
-      label: "Learning Streak",
-      value: formatNumber(stats.streak),
-      icon: <UserCircle />,
+        label: "Learning Streak",
+        value: formatNumber(stats.streak),
+        icon: <UserCircle />,
       },
       {
-      label: "Longest Streak",
-      value: formatNumber(analytics?.stats?.longestStreak || 0),
-      icon: <Star />,
+        label: "Longest Streak",
+        value: formatNumber(analytics?.subjects?.length || 0),
+        icon: <Star />,
       },
     ];
   }, [analytics]);
