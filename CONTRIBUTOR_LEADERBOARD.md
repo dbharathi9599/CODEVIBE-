@@ -21,7 +21,7 @@ Last updated: 2026-05-31
 | 5 | [@KGFCH2](https://github.com/KGFCH2) | 87 | 1 | 1 | 15 |
 | 6 | [@pranav-cholleti](https://github.com/pranav-cholleti) | 86 | 18 | 3 | 4 |
 | 7 | [@Mahi-19-design](https://github.com/Mahi-19-design) | 82 | 6 | 5 | 4 |
-| 8 | [@DebasmitaBose0](https://github.com/DebasmitaBose0) | 75 | 0 | 0 | 15 |
+| 8 | [@DebasmitaBose0](https://github.com/DebasmitaBose0) | 80 | 0 | 0 | 16 |
 | 9 | [@Dhruvil20060](https://github.com/Dhruvil20060) | 75 | 5 | 4 | 5 |
 | 10 | [@StarDustNova-57](https://github.com/StarDustNova-57) | 75 | 5 | 4 | 5 |
 | 11 | [@divyagsharma2006-blip](https://github.com/divyagsharma2006-blip) | 65 | 5 | 4 | 3 |
