@@ -5,6 +5,7 @@ import { useSearch } from "../context/SearchContext.jsx";
 import { useDebounce } from "../hooks/useDebounce"; // added
 import { FaSignInAlt, FaSignOutAlt, FaUserPlus, FaTachometerAlt, FaGamepad, FaSearch, FaTimes } from "react-icons/fa";
 import logo from "../assets/favicon.svg";
+import StreakCounter from "./StreakCounter.jsx";
 
 const COURSES = [
   { label: "HTML Basics", path: "/HtmlLesson" },
@@ -123,7 +124,12 @@ const Head = () => {
 
           {/* 2. Conditional Links based on Auth State */}
           {user ? (
-            <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <StreakCounter />
+              <Link to="/leaderboard" className="nav-link">
+                <FaTrophy className="nav-icon" />
+                <span>Leaderboard</span>
+              </Link>
               <Link to="/dashboard" className="nav-link">
                 <FaTachometerAlt className="nav-icon" />
                 <span>Dashboard</span>
@@ -132,7 +138,7 @@ const Head = () => {
                 <FaSignOutAlt className="nav-icon" />
                 <span>Logout</span>
               </Link>
-            </>
+            </div>
           ) : (
             <>
               <Link to="/login" className="nav-link">
@@ -175,13 +181,14 @@ const Head = () => {
         </Link>
         {user ? (
           <>
-            <Link
-              to="/dashboard"
-              className="nav-link"
-              onClick={() => setMenuOpen(false)}
-            >
-              <FaTachometerAlt className="nav-icon" />
-              <span>Dashboard</span>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '8px' }}>
+              <StreakCounter />
+            </div>
+            <Link to="/leaderboard" className="nav-link" onClick={() => setMenuOpen(false)}>
+              <FaTrophy className="nav-icon" /><span>Leaderboard</span>
+            </Link>
+            <Link to="/dashboard" className="nav-link" onClick={() => setMenuOpen(false)}>
+              <FaTachometerAlt className="nav-icon" /><span>Dashboard</span>
             </Link>
             <Link to="/login" onClick={handleLogout} className="nav-link">
               <FaSignOutAlt className="nav-icon" />
