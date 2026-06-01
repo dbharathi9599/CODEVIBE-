@@ -113,13 +113,13 @@ const Head = () => {
         {/* Desktop Nav */}
         <nav className="header-nav" aria-label="Main navigation">
           {/* 1. Public Link: Available to everyone */}
-          <Link 
-  to="/lessons" 
-  state={{ scrollToFaq: true }} 
-  className="nav-link"
->
-  <span>FAQ</span>
-</Link>
+          <Link
+            to="/lessons"
+            state={{ scrollToFaq: true }}
+            className="nav-link"
+          >
+            <span>FAQ</span>
+          </Link>
 
           {/* 2. Conditional Links based on Auth State */}
           {user ? (
@@ -147,18 +147,19 @@ const Head = () => {
           )}
         </nav>
 
-        {/* Hamburger for mobile */}
-        <button
-          className="hamburger"
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          <span className={`ham-bar ${menuOpen ? "open" : ""}`} />
-          <span className={`ham-bar ${menuOpen ? "open" : ""}`} />
-          <span className={`ham-bar ${menuOpen ? "open" : ""}`} />
-        </button>
       </div>
+
+      {/* Hamburger for mobile */}
+      <button
+        className="hamburger"
+        aria-label="Toggle menu"
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((v) => !v)}
+      >
+        <span className={`ham-bar ${menuOpen ? "open" : ""}`} />
+        <span className={`ham-bar ${menuOpen ? "open" : ""}`} />
+        <span className={`ham-bar ${menuOpen ? "open" : ""}`} />
+      </button>
 
       {/* Mobile Nav Drawer */}
       <nav
